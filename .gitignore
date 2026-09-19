@@ -1,0 +1,136 @@
+# ==================================
+# IDE JetBrains
+# IntelliJ IDEA, CLion, PhpStorm,
+# WebStorm, PyCharm, Rider...
+# ==================================
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Fichiers locaux JetBrains
+.idea/workspace.xml
+.idea/**/workspace.xml
+.idea/tasks.xml
+.idea/**/tasks.xml
+.idea/usage.statistics.xml
+.idea/**/usage.statistics.xml
+.idea/dictionaries/
+.idea/**/dictionaries/
+.idea/shelf/
+.idea/**/shelf/
+
+# ==================================
+# Visual Studio
+# ==================================
+
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.vcxproj.user
+*.sln.docstates
+
+# Fichiers temporaires et caches Visual Studio
+[Bb]in/
+[Oo]bj/
+Debug/
+Release/
+x64/
+x86/
+out/
+
+# Résultats de tests
+TestResults/
+*.trx
+*.testlog
+
+# ==================================
+# Visual Studio Code
+# ==================================
+
+.vscode/
+
+# Historique local de VS Code
+.history/
+
+# ==================================
+# Site web / développement local
+# ==================================
+
+# Dépendances JavaScript
+node_modules/
+
+# Dossiers de compilation
+dist/
+build/
+coverage/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+
+# Fichiers générés
+*.min.js
+*.min.css
+
+# ==================================
+# Environnement et secrets
+# ==================================
+
+.env
+.env.*
+!.env.example
+
+# Clés et certificats privés
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ==================================
+# Serveurs locaux
+# ==================================
+
+# XAMPP / serveur local
+xampp/
+htdocs/
+
+# Logs
+*.log
+logs/
+
+# Bases de données locales
+*.sqlite
+*.sqlite3
+*.db
+
+# ==================================
+# Système d'exploitation
+# ==================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ==================================
+# Fichiers temporaires
+# ==================================
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
