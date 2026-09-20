@@ -3,7 +3,9 @@ let imgStart = Math.floor(Math.random()*100)+1
 
 let url = [] ;
 
-jeu = []
+let jeu = [] ;7
+
+let plateau = document.getElementById("plateau");
 
 /**
  * Récuperation des images aléatoires
@@ -37,3 +39,24 @@ function shuffle(cards = []) {
     }
     return cards;
 }
+
+
+function initGame() {
+    jeu = shuffle(jeu) ;
+    jeu.forEach((carte , index )=> {
+        let div = document.createElement("div");
+        div.classList.add("card");
+
+        let img = document.createElement("img");
+        img.src = carte;
+        img.alt = `Image n°${index+1} du Memory` ;
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.display = "none";
+
+        div.append(img);
+        plateau.append(div);
+    })
+}
+
+initGame();
