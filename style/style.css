@@ -24,7 +24,13 @@ h1 {
     height: 160px;
     background-color: lightgray;
     border-radius: 5px;
-    border: 5px solid lightgray;
+    border: 5px solid gray;
     margin: 15px;
+    transition: transform 0.5s;
+    cursor: pointer;
+}
+
+.card.retournee {
+    transform: rotateY(180deg);
 }
 

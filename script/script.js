@@ -1,9 +1,18 @@
 let dimension = 150 ;
-let imgStart = Math.floor(Math.random()*100)+1
+let imgStart = Math.floor(Math.random()*92)+1
 
 let url = [] ;
 
-let jeu = [] ;7
+let jeu = [] ;
+
+let firstCard = null ;
+let secondCard = null ;
+
+let lockBoard = false;
+
+let move = 0 ;
+let matchedCount = 0;
+
 
 let plateau = document.getElementById("plateau");
 
@@ -48,8 +57,11 @@ function initGame() {
         /**
          *Création d'une balise <div>
          */
-        let div = document.createElement("div");
-        div.classList.add("card"); // ajout de classe
+        let card = document.createElement("div");
+        card.classList.add("card"); // ajout de classe
+        card.role = "button"; // définit le <div> comme un button
+        card.tabIndex = "0"; //ajoute un index afin de pouvoir utiliser les tab du clavier pour parcourir les elements
+        card.dataset.value = carte;
 
         /**
          *Creation d'une balise <img>
@@ -59,13 +71,87 @@ function initGame() {
         img.alt = `Image n°${index+1} du Memory` ; // ajout de l'Alt avec index pour éviter le warning de repetition des Alt
         img.style.width = "100%"; // largeur
         img.style.height = "100%"; // hauteur
-        img.style.display = "block"; // pour cacher les image (initialisation du jeu)
+        img.style.display = "none"; // pour cacher les image (initialisation du jeu)
 
-        div.append(img); // ajout de l'image dans le <div>
-        plateau.append(div); // ajout du <div> dans le plateau
+        card.append(img); // ajout de l'image dans le <div>
+        plateau.append(card); // ajout du <div> dans le plateau
 
+        card.addEventListener("click", () => handleCardClick(card))
     })
 }
 
+
+function handleCardClick(card) {
+    console.log(lockBoard)
+    if (lockBoard === true) {
+        return;
+    }
+
+    if (firstCard === null) {
+        firstCard = card;
+        afficherCard(card);
+        console.log("affichage carte1");
+
+    }else if (firstCard != null && secondCard === null) {
+        secondCard = card;
+        afficherCard(secondCard);
+        console.log("affichage carte2");
+        lockBoard = true;
+
+
+
+        if (checkMatch(firstCard, secondCard) === true ) {
+            move += 2 ;
+            console.log("match")
+            lockBoard = false;
+
+            firstCard = null ;
+            secondCard = null ;
+        }
+        else {
+            console.log("not match");
+            move += 2 ;
+            setTimeout(() => {
+                cacherCard(firstCard);
+                cacherCard(secondCard);
+
+                firstCard = null ;
+                secondCard = null ;
+
+                lockBoard = false;
+            }, 800);
+
+
+            console.log("carte cachée")
+
+
+
+        }
+    }
+}
+
+function afficherCard(card){
+    card.classList.toggle("retournee");
+    console.log(card);
+
+    setTimeout(() => {
+        card.querySelector("img").style.display = "block";
+    }, 140);
+}
+
+function cacherCard(card){
+    card.classList.remove("retournee");
+
+    setTimeout(() => {
+        card.querySelector("img").style.display = "none";
+    }, 140);
+}
+
+function checkMatch(card1 , card2) {
+    console.log(card1.dataset.value);
+    console.log(card2.dataset.value);
+    return card1.dataset.value === card2.dataset.value ;
+
+}
 
 initGame();
