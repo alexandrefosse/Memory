@@ -8,6 +8,8 @@ let jeu = [] ;
 let firstCard = null ;
 let secondCard = null ;
 
+let turnedCard = [] ;
+
 let lockBoard = false;
 
 let move = 0 ;
@@ -82,8 +84,15 @@ function initGame() {
 
 
 function handleCardClick(card) {
-    console.log(lockBoard)
     if (lockBoard === true) {
+        return;
+    }
+
+    if (card === firstCard){
+        return;
+    }
+
+    if (turnedCard.includes(card.dataset.value)){
         return;
     }
 
@@ -91,26 +100,27 @@ function handleCardClick(card) {
     if (firstCard === null) {
         firstCard = card;
         afficherCard(card);
-        console.log("affichage carte1");
 
-    }else if (firstCard != null && secondCard === null && card !== firstCard) {
+    }else if (firstCard != null && secondCard === null) {
         secondCard = card;
         afficherCard(secondCard);
-        console.log("affichage carte2");
         lockBoard = true;
 
 
 
         if (checkMatch(firstCard, secondCard) === true ) {
             move += 2 ;
-            console.log("match")
             lockBoard = false;
+
+            turnedCard.push(firstCard.dataset.value);
 
             firstCard = null ;
             secondCard = null ;
+
+            matchedCount ++ ;
+
         }
         else {
-            console.log("not match");
             move += 2 ;
             setTimeout(() => {
                 cacherCard(firstCard);
@@ -123,17 +133,12 @@ function handleCardClick(card) {
             }, 800);
 
 
-            console.log("carte cachée")
-
-
-
         }
     }
 }
 
 function afficherCard(card){
     card.classList.toggle("retournee");
-    console.log(card);
 
     setTimeout(() => {
         card.querySelector("img").style.display = "block";
@@ -149,8 +154,6 @@ function cacherCard(card){
 }
 
 function checkMatch(card1 , card2) {
-    console.log(card1.dataset.value);
-    console.log(card2.dataset.value);
     return card1.dataset.value === card2.dataset.value ;
 
 }
