@@ -1,22 +1,16 @@
 let dimension = 150 ;
 let imgStart = Math.floor(Math.random()*92)+1
-
 let url = [] ;
-
 let jeu = [] ;
-
 let firstCard = null ;
 let secondCard = null ;
-
 let turnedCard = [] ;
-
 let lockBoard = false;
-
 let move = 0 ;
 let matchedCount = 0;
-
-
 let plateau = document.getElementById("plateau");
+
+
 
 /**
  * Récuperation des images aléatoires
@@ -107,7 +101,6 @@ function handleCardClick(card) {
         lockBoard = true;
 
 
-
         if (checkMatch(firstCard, secondCard) === true ) {
             move += 2 ;
             lockBoard = false;
@@ -118,6 +111,10 @@ function handleCardClick(card) {
             secondCard = null ;
 
             matchedCount ++ ;
+
+            if (matchedCount === 8) {
+                setTimeout(() => gameWin() , 1500)
+            }
 
         }
         else {
@@ -156,6 +153,16 @@ function cacherCard(card){
 function checkMatch(card1 , card2) {
     return card1.dataset.value === card2.dataset.value ;
 
+}
+
+function gameWin() {
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        card.remove();
+    })
+
+    plateau.append("Bravo vous avez gagné")
 }
 
 initGame();
