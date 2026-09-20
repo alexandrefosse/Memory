@@ -87,12 +87,13 @@ function handleCardClick(card) {
         return;
     }
 
+
     if (firstCard === null) {
         firstCard = card;
         afficherCard(card);
         console.log("affichage carte1");
 
-    }else if (firstCard != null && secondCard === null) {
+    }else if (firstCard != null && secondCard === null && card !== firstCard) {
         secondCard = card;
         afficherCard(secondCard);
         console.log("affichage carte2");
