@@ -1,32 +1,39 @@
 let dimension = 150 ;
-let imgStart = Math.floor(Math.random()*92)+1
-let url = [] ;
-let jeu = [] ;
+let urlValide = [] ;
 let firstCard = null ;
 let secondCard = null ;
 let turnedCard = [] ;
 let lockBoard = false;
 let move = 0 ;
 let matchedCount = 0;
-let plateau = document.getElementById("plateau");
+const main = document.querySelector("main");
 
 
+function pickCard(difficulty) {
+    let jeu = [] ;
+    while(urlValide.length < difficulty) {
+        let idTest = Math.floor(Math.random()*100)+1
+        if (idTest !== 86 && idTest !== 97 && !urlValide.includes(`https://picsum.photos/id/${idTest}/${dimension}`)) {
+            urlValide.push(`https://picsum.photos/id/${idTest}/${dimension}`)
+        }
+        console.table(urlValide);
+    }
 
-/**
- * Récuperation des images aléatoires
- */
-for (let i = 0 ; i < 8 ; i++) {
-    url.push(`https://picsum.photos/id/${imgStart+i}/${dimension}`)
+    for (let i = 0 ; i < difficulty ; i++) {
+        jeu[i] = urlValide[i];
+        jeu[i + difficulty] = urlValide[i];
+    }
+
+    if (difficulty === 8){
+        initGame(jeu , "facile")
+    }else if(difficulty === 18){
+        initGame(jeu , "moyen")
+    }else if(difficulty === 32){
+        initGame(jeu , "difficile")
+    }
+
 }
 
-
-/**
- * Duplication des cartes
- */
-for (let i = 0 ; i < 8 ; i++) {
-    jeu[i] = url[i];
-    jeu[i + 8] = url[i];
-}
 
 
 /**
@@ -47,14 +54,20 @@ function shuffle(cards = []) {
 }
 
 
-function initGame() {
+function initGame(jeu,difficulty) {
     jeu = shuffle(jeu) ;
+    let plateau = document.createElement("div");
+
+    plateau.id = "plateau";
+    plateau.classList.add("plateau");
+    main.appendChild(plateau);
+
     jeu.forEach((carte , index )=> {
         /**
          *Création d'une balise <div>
          */
         let card = document.createElement("div");
-        card.classList.add("card"); // ajout de classe
+        card.classList.add("card" , difficulty); // ajout de classe
         card.role = "button"; // définit le <div> comme un button
         card.tabIndex = "0"; //ajoute un index afin de pouvoir utiliser les tab du clavier pour parcourir les elements
         card.dataset.value = carte;
@@ -67,6 +80,7 @@ function initGame() {
         img.alt = `Image n°${index+1} du Memory` ; // ajout de l'Alt avec index pour éviter le warning de repetition des Alt
         img.style.width = "100%"; // largeur
         img.style.height = "100%"; // hauteur
+        img.style.borderRadius = "5px";
         img.style.display = "none"; // pour cacher les image (initialisation du jeu)
 
         card.append(img); // ajout de l'image dans le <div>
@@ -112,8 +126,8 @@ function handleCardClick(card) {
 
             matchedCount ++ ;
 
-            if (matchedCount === 8) {
-                setTimeout(() => gameWin() , 1500)
+            if (matchedCount === (document.querySelectorAll(".card").length)/2 ) {
+                setTimeout(() => gameWin() , 1000)
             }
 
         }
@@ -162,7 +176,60 @@ function gameWin() {
         card.remove();
     })
 
-    plateau.append("Bravo vous avez gagné")
+    const plateau = document.querySelector(".plateau");
+    plateau.remove();
+
+    main.append("Bravo vous avez gagné");
 }
 
-initGame();
+function choiceDifficulty() {
+
+    let div = document.createElement("div");
+    div.classList.add("difficulty-div");
+    main.append(div);
+
+    let p = document.createElement("p");
+    p.textContent = "Choisissez votre Difficulté"
+    p.style.fontSize = "20px";
+    div.append(p);
+
+    let difficultyNormal = document.createElement("button");
+    difficultyNormal.classList.add("difficulty-button");
+    difficultyNormal.type = "button";
+    difficultyNormal.textContent = "Normale";
+    div.append(difficultyNormal);
+    difficultyNormal.addEventListener("click",() => {
+        pickCard(8);
+        choiceDelete();
+
+
+    })
+
+    let difficultyHard = document.createElement("button");
+    difficultyHard.classList.add("difficulty-button");
+    difficultyHard.type = "button";
+    difficultyHard.textContent = "Dur";
+    div.append(difficultyHard);
+    difficultyHard.addEventListener("click",() => {
+        pickCard(18);
+        choiceDelete();
+    })
+
+    let difficultyVeryHard = document.createElement("button");
+    difficultyVeryHard.classList.add("difficulty-button");
+    difficultyVeryHard.type = "button";
+    difficultyVeryHard.textContent = "Super dur";
+    div.append(difficultyVeryHard);
+    difficultyVeryHard.addEventListener("click",() => {
+        pickCard(32);
+        choiceDelete();
+    })
+
+}
+
+function choiceDelete() {
+    const div = document.querySelector(".difficulty-div");
+    div.remove();
+}
+
+choiceDifficulty();
