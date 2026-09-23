@@ -7,6 +7,8 @@ let lockBoard = false;
 let move = 0 ;
 let matchedCount = 0;
 const main = document.querySelector("main");
+let timer = 0 ;
+let timerInterval ;
 
 
 function pickCard(difficulty) {
@@ -16,7 +18,6 @@ function pickCard(difficulty) {
         if (idTest !== 86 && idTest !== 97 && !urlValide.includes(`https://picsum.photos/id/${idTest}/${dimension}`)) {
             urlValide.push(`https://picsum.photos/id/${idTest}/${dimension}`)
         }
-        console.table(urlValide);
     }
 
     for (let i = 0 ; i < difficulty ; i++) {
@@ -56,11 +57,22 @@ function shuffle(cards = []) {
 
 function initGame(jeu,difficulty) {
     jeu = shuffle(jeu) ;
+
+    let container = document.createElement("div");
+    container.classList.add("game-container");
+
+    main.appendChild(container);
+
+
     let plateau = document.createElement("div");
 
     plateau.id = "plateau";
     plateau.classList.add("plateau");
-    main.appendChild(plateau);
+    container.appendChild(plateau);
+    let timerBalise = document.createElement("p");
+    timerBalise.classList.add("timer");
+    timerBalise.textContent = "Timer :  00:00" ;
+    container.append(timerBalise);
 
     jeu.forEach((carte , index )=> {
         /**
@@ -108,6 +120,10 @@ function handleCardClick(card) {
     if (firstCard === null) {
         firstCard = card;
         afficherCard(card);
+
+        if (move === 0) {
+            timerStart();
+        }
 
     }else if (firstCard != null && secondCard === null) {
         secondCard = card;
@@ -170,6 +186,7 @@ function checkMatch(card1 , card2) {
 }
 
 function gameWin() {
+    timerstop();
     let cards = document.querySelectorAll(".card");
 
     cards.forEach(card => {
@@ -179,8 +196,29 @@ function gameWin() {
     const plateau = document.querySelector(".plateau");
     plateau.remove();
 
-    main.append("Bravo vous avez gagné");
+    document.querySelector(".game-container").append("Bravo vous avez gagné");
 }
+
+function timerStart () {
+    let timerBalise = document.querySelector(".timer");
+
+    timerInterval = setInterval(() => {
+        timer += 1 ;
+        timerBalise.textContent = "Timer : " + formatTime(timer);
+    }, 1000);
+}
+
+function formatTime(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let secondes = seconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(secondes).padStart(2, "0")}`;
+}
+
+function timerstop() {
+    clearInterval(timerInterval);
+}
+
 
 function choiceDifficulty() {
 
